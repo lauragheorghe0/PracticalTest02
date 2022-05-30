@@ -13,7 +13,7 @@ import ro.pub.cs.systems.eim.practicaltest02.general.Utilities;
 
 public class ClientThread extends Thread {
 
-    // TODO: add params for the data
+    private String word;
     private TextView responseDataTextView = null;
 
     private String clientIpAddress = null;
@@ -21,12 +21,17 @@ public class ClientThread extends Thread {
     private Socket socket = null;
 
     // add the constructor
+    public ClientThread(String clientIpAddress, int clientPort, String word, TextView responseDataTextView) {
+        this.clientIpAddress = clientIpAddress;
+        this.clientPort  = clientPort;
+        this.responseDataTextView = responseDataTextView;
+    }
 
 
     @Override
     public void run() {
         try {
-            Socket socket = new Socket(clientIpAddress, clientPort);
+            socket = new Socket(clientIpAddress, clientPort);
 
             if (socket == null) {
                 Log.e(Constants.TAG, "[CLIENT_THREAD] Could not create socket!");

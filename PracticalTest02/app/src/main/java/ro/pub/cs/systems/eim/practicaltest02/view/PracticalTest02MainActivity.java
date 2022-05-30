@@ -20,6 +20,8 @@ public class PracticalTest02MainActivity extends AppCompatActivity {
     private EditText clientAddressEditText;
     private EditText clientPortEditText;
 
+    private EditText dictionaryWordEditText;
+
     private Button connectToServerButton;
     private Button showResultsButton;
 
@@ -62,8 +64,10 @@ public class PracticalTest02MainActivity extends AppCompatActivity {
             String clientPort = clientPortEditText.getText().toString();
 
             // Get the data
+            String word = dictionaryWordEditText.getText().toString();
 
             // Initialize the clientThread (same as serverThread)
+            clientThread = new ClientThread(clientIpAddress, Integer.parseInt(clientPort), word, responseDataTextView);
         }
     }
 
@@ -83,6 +87,8 @@ public class PracticalTest02MainActivity extends AppCompatActivity {
         showResultsButton.setOnClickListener(showResultsButtonOnClickListener);
 
         responseDataTextView = (TextView) findViewById(R.id.responseDataTextView);
+
+        dictionaryWordEditText = (EditText) findViewById(R.id.dictionaryWordEditText);
     }
 
     @Override
