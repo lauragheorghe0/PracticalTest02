@@ -42,22 +42,6 @@ public class CommunicationThread extends Thread {
         }
 
         try {
-            // 1. Se creeaza bufferedReader, printWriter
-
-            // 2. Se citesc datele cu acestea
-            // 2.5. Iau structura de date deja existenta cu serverThread.getData()
-
-            // 3. Se creeaza cerere HTTP (daca trebuie) -> HttpGet sau HttpPost:
-            // HttpClient httpClient = new DefaultHttpClient()
-            // new HttpGet(url)
-            // httpResponse: httpClient.execute(httpGet)
-            // httpEntity: httpResponse.getEntity()
-            // String response: EntityUtils.toString(httpEntity)
-            // 3.5: Daca e prin socketi, se creeaza socketClient cu IP si port etc.
-
-            // 4. Se ia raspunsul si se parseaza cu Json probabil -> se trimite cu printWriter
-            // JSONObject content = new JSONObject(pageSourceCode);
-
             // Create bufferedReader, printWriter
             bufferedReader = Utilities.getReader(socket);
             printWriter = Utilities.getWriter(socket);
