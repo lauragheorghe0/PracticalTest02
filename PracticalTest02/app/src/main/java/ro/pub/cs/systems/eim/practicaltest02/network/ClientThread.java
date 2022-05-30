@@ -14,19 +14,19 @@ import ro.pub.cs.systems.eim.practicaltest02.general.Utilities;
 public class ClientThread extends Thread {
 
     private String word;
-    private TextView responseDataTextView = null;
+    private TextView responseDataTextView;
 
-    private String clientIpAddress = null;
-    private int clientPort = 0;
+    private String clientIpAddress;
+    private int clientPort;
     private Socket socket = null;
 
     // add the constructor
     public ClientThread(String clientIpAddress, int clientPort, String word, TextView responseDataTextView) {
         this.clientIpAddress = clientIpAddress;
         this.clientPort  = clientPort;
+        this.word = word;
         this.responseDataTextView = responseDataTextView;
     }
-
 
     @Override
     public void run() {
@@ -38,6 +38,8 @@ public class ClientThread extends Thread {
                 return;
             }
 
+            Log.i(Constants.TAG, "[CLIENT_THREAD] Socket created");
+
             BufferedReader bufferedReader = Utilities.getReader(socket);
             PrintWriter printWriter = Utilities.getWriter(socket);
             if (bufferedReader == null || printWriter == null) {
@@ -46,7 +48,10 @@ public class ClientThread extends Thread {
             }
 
             // Send the data
-            // printWriter.println(...), printWriter.flush(), repeat.
+            printWriter.println(word);
+            printWriter.flush();
+
+            Log.i(Constants.TAG, "data sent: " + word);
 
             // Receive the response and set it on the text view
             String response;

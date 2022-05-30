@@ -66,8 +66,11 @@ public class PracticalTest02MainActivity extends AppCompatActivity {
             // Get the data
             String word = dictionaryWordEditText.getText().toString();
 
+            Log.v(Constants.TAG, "[MAIN_ACTIVITY] WORD IS: " + word);
+
             // Initialize the clientThread (same as serverThread)
             clientThread = new ClientThread(clientIpAddress, Integer.parseInt(clientPort), word, responseDataTextView);
+            clientThread.start();
         }
     }
 

@@ -6,4 +6,6 @@ public class Constants {
     public static final boolean DEBUG = true;
 
     // Other constants
+    public static final String WEB_URL = "https://api.dictionaryapi.dev/api/v2/entries/en/";
+    public static final String MEANINGS = "meanings";
 }

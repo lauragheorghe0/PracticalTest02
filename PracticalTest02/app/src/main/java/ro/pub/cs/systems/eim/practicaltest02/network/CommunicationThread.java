@@ -1,5 +1,6 @@
 package ro.pub.cs.systems.eim.practicaltest02.network;
 
+import android.support.v4.os.IResultReceiver;
 import android.util.Log;
 
 import org.apache.http.HttpEntity;
@@ -8,6 +9,7 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -56,9 +58,42 @@ public class CommunicationThread extends Thread {
             // 4. Se ia raspunsul si se parseaza cu Json probabil -> se trimite cu printWriter
             // JSONObject content = new JSONObject(pageSourceCode);
 
+            // Create bufferedReader, printWriter
             bufferedReader = Utilities.getReader(socket);
             printWriter = Utilities.getWriter(socket);
+
+            // Read the data from the client
+            String word = bufferedReader.readLine();
+            if (word == null) {
+                Log.d(Constants.TAG, "No word received");
+                return;
+            }
+
+            HttpClient httpClient = new DefaultHttpClient();
+            HttpGet httpGet = new HttpGet(Constants.WEB_URL + word);
+            HttpResponse httpResponse = httpClient.execute(httpGet);
+            HttpEntity httpEntity = httpResponse.getEntity();
+
+            if (httpEntity == null) {
+                Log.d(Constants.TAG, "[COMMUNICATION THREAD] httpEntity is null");
+                return;
+            }
+
+            String response = EntityUtils.toString(httpEntity);
+
+            // Parsing the answer
+            JSONArray content = new JSONArray(response);
+            JSONArray meanings = content.getJSONObject(0).getJSONArray(Constants.MEANINGS);
+            JSONArray definitions = meanings.getJSONObject(0).getJSONArray("definitions");
+            String definition = definitions.getJSONObject(0).getString("definition");
+
+            Log.i(Constants.TAG, "[COMMUNICATION THREAD] Definition is: " + definition);
+
+            printWriter.println(definition);
+            printWriter.flush();
         } catch (IOException e) {
+            e.printStackTrace();
+        } catch (JSONException e) {
             e.printStackTrace();
         } finally {
             if (socket != null) {

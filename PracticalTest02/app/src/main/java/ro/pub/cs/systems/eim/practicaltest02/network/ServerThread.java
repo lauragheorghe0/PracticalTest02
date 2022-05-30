@@ -14,12 +14,21 @@ public class ServerThread extends Thread {
 
     private int port;
     private ServerSocket serverSocket;
+
     private HashMap<String, DictionaryInformation> data;
+
+    public HashMap<String, DictionaryInformation> getData() {
+        return data;
+    }
+
+    public void setData(HashMap<String, DictionaryInformation> data) {
+        this.data = data;
+    }
 
     public ServerThread(int port) {
         this.port = port;
         try {
-            this.serverSocket = new ServerSocket(port);
+            this.serverSocket = new ServerSocket(this.port);
         } catch (IOException e) {
             Log.e(Constants.TAG, "[SERVER THREAD] Server socket couldn't be created: " + e.getMessage());
             e.printStackTrace();
@@ -40,6 +49,7 @@ public class ServerThread extends Thread {
     public void run() {
         while (!Thread.currentThread().isInterrupted()) {
             try {
+                Log.i(Constants.TAG, "[SERVER_THREAD] Waiting for a client invocation");
                 Socket socket = serverSocket.accept();
 
                 Log.v(Constants.TAG, "Connection opened with " + socket.getInetAddress() + ":" + socket.getLocalPort());
